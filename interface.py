@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	
 
 	#reverse count screens 
-	screens_countdown = load_batch_images(*["count/image-000{}.png".format(str(i)) for i in range(53,90)])
+	screens_countdown = load_batch_images(*["count/image-000{:02}.png".format(i) for i in range(1,52)])
 
 	#ending screens
 	screens_ending = load_batch_images("Sans nom ending1.jpg")
@@ -56,9 +56,9 @@ if __name__ == "__main__":
 				pygame.display.flip()
 				for screen in screens_countdown:
 
-					window.blit(screen,(100,80))
+					window.blit(screen,(-90,-30))
 					pygame.display.flip()
-					time.sleep(0.15)
+					time.sleep(0.05)
 				#take the picture here
 				time.sleep(2)
 				print("take the picture")
