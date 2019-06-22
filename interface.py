@@ -3,116 +3,124 @@ from pygame.locals import *
 import time
 import random
 
+class Interface():
+	def __init__(self,size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending):
+		pygame.init()
+		self.size_screen=size_screen
+		self.countdown_sound=self.load_sounds(countdown_sound)[0]
+		self.shots_sounds=self.load_sounds(*shots_sounds)
+		self.welcome_imgs=self.load_images(*welcome_imgs)
+		self.which_welcome_screen=1
+		self.readies=self.load_images(*readies)
+		self.screens_countdown=self.load_images(*screens_countdown)
+		self.screens_ending=self.load_images(*screens_ending)
+		self.window = pygame.display.set_mode(size_screen,RESIZABLE)
+		self.window.fill([0,0,0])
+		pygame.display.flip()
+		self.window.blit(self.welcome_imgs[1],(0,0))
+		pygame.display.flip()
+
+
+	def load_images(self,*args):
+		return [pygame.transform.scale(pygame.image.load(arg),self.size_screen) for arg in args]
+
+	def load_sounds(self,*args):
+		return [pygame.mixer.Sound(arg) for arg in args]
+
+	def welcome_screen(self):
+		time.sleep(1)
+		if self.which_welcome_screen==1:
+			self.which_welcome_screen=random.randint(0,1)*2
+		elif self.which_welcome_screen==2 or self.which_welcome_screen==0:
+			self.which_welcome_screen=1 
+		#displaying switching screen
+		self.window.blit(self.welcome_imgs[self.which_welcome_screen],(0,0))
+		pygame.display.flip()
+
+	def play_countdown(self):
+		#play sound
+		self.countdown_sound.play()
+		#displaying ready message for 5 seconds
+		self.window.blit(pick_random_in_list(self.readies),(0,0))
+		pygame.display.flip()
+		time.sleep(5)
+		
+		#countdown
+		for screen in self.screens_countdown:
+			
+			self.window.blit(screen,(0,0))
+			pygame.display.flip()
+			time.sleep(0.1)
+
+		self.countdown_sound.stop()
+		#filling black the window
+		self.window.fill([0,0,0])
+		pygame.display.flip()
+		pick_random_in_list(self.shots_sounds).play()
+
+	def play_ending(self):
+		self.window.blit(pick_random_in_list(self.screens_ending),(0,0))
+		pygame.display.flip()
+		time.sleep(4)
+
+
+
+
+
+
+
+
 
 def pick_random_in_list(list_item):
 	return list_item[random.randint(0,len(list_item)-1)]
 
-#function to load a batch of screens 
-def load_batch_images(*args,size_screen=(1058, 595)):
-	return [pygame.transform.scale(pygame.image.load(arg),(1058, 595)) for arg in args]
-
-#function to load a batch of sounds
-def load_sounds(*args):
-	sounds=[pygame.mixer.Sound(arg) for arg in args]
 	return sounds
 if __name__ == "__main__":
-	pygame.init()
+	
 	#constants:
 	#Size Screen
 	size_screen=(1058, 595)
+	countdown_sound="sound_booth/countdown.ogg"
+	shots_sounds=["sound_booth/camera-shutter1.ogg",
+				  "sound_booth/camera-shutter3.ogg",
+				  "sound_booth/camera-shutter8.ogg",
+				  "sound_booth/chinese-gong.ogg",
+				  "sound_booth/Cuckoo-clock.ogg",
+				  "sound_booth/party_horn.ogg"]
+	welcome_imgs=["picture_camera/ap_right.png",
+				  "picture_camera/ap.png",
+				  "picture_camera/ap_left.png"]
+	readies=["picture_camera/ready.png"]
+	screens_countdown=["count/image-000{:02}.png".format(i) for i in range(1,52)]
+	screens_ending=["picture_camera/end1.png"]
 
-	#Sounds
-	countdown_sound = load_sounds("sound_booth/countdown.ogg")[0]
-
-	picture_sounds = load_sounds("sound_booth/camera-shutter1.ogg",
-								"sound_booth/camera-shutter3.ogg",
-								"sound_booth/camera-shutter8.ogg",
-								"sound_booth/chinese-gong.ogg",
-								"sound_booth/Cuckoo-clock.ogg",
-								"sound_booth/party_horn.ogg")
-	
-	#Pictures
-	welcomes = load_batch_images("picture_camera/ap_right.png",
-								"picture_camera/ap.png",
-								"picture_camera/ap_left.png",
-								size_screen=size_screen)
-
-	readies = load_batch_images("picture_camera/ready.png",
-								size_screen=size_screen)
-
-	#reverse count screens 
-	screens_countdown = load_batch_images(*["count/image-000{:02}.png".format(i) for i in range(1,52)],
-											size_screen=size_screen)
-
-	#ending screens
-	screens_ending = load_batch_images("picture_camera/end1.png",
-										size_screen=size_screen)
-
-	#opening window with black screen
-	window = pygame.display.set_mode(size_screen,RESIZABLE)
-	window.fill([0,0,0])
-	pygame.display.flip()
-
-	#setting first screen as the centered one
-	window.blit(welcomes[1],(0,0))
-	pygame.display.flip()
+	interface = Interface(size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending)
 
 	keep_open = True
 	#tracker for which screen is currently running
-	which_welcome_screen=1
-	#Main loop for running the program
 	while keep_open:
 
 		#make the camera flip
-		time.sleep(1)
-		if which_welcome_screen==1:
-			which_welcome_screen=random.randint(0,1)*2
-		elif which_welcome_screen==2 or which_welcome_screen==0:
-			which_welcome_screen=1 
-		#displaying switching screen
-		window.blit(welcomes[which_welcome_screen],(0,0))
-		pygame.display.flip()
+		interface.welcome_screen()
 
 
 		#Dealing with events in this loop
 		for event in pygame.event.get():
 
-			#quit event for exiting the window
+			#Quit event for exiting the window
 			if event.type == QUIT:
 				keep_open = False
 
 			#Event when clicking
 			if event.type == MOUSEBUTTONDOWN:
-				#displaying ready message
-				countdown_sound.play()
-				
-				window.blit(pick_random_in_list(readies[0]),(0,0))
-				pygame.display.flip()
-				time.sleep(5)
-				#erasing 
-				window.fill([0,0,0])
-				pygame.display.flip()
-				
-				for screen in screens_countdown:
-					
-					window.blit(screen,(0,0))
-					pygame.display.flip()
-					time.sleep(0.1)
-				#take the picture here
-				countdown_sound.stop()
-				window.fill([0,0,0])
-				pygame.display.flip()
-				pick_random_in_list(picture_sounds).play()
+				interface.play_countdown()
+
 				print("take the picture")
 
 				#display random ending
-				window.blit(pick_random_in_list(screens_ending),(0,0))
-				pygame.display.flip()
-				time.sleep(4)
-
-				#displaying the welcome screen
-				window.blit(welcomes[which_welcome_screen],(0,0))
-				pygame.display.flip()
+				interface.play_ending()
+				#display welcome screen
+				interface.welcome_screen()
 
 				#clearing the queue of events
 				pygame.event.clear()
