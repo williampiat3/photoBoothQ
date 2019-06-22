@@ -8,6 +8,7 @@ class PictureManager(object):
 
     def __init__(self):
         self.camera = PiCamera()
+        self.set_max_resolution()
         
     def set_max_resolution(self):
         '''
