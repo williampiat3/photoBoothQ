@@ -1,6 +1,7 @@
 from picamera import PiCamera
 from time import sleep
 from os.path import join
+from pandas._libs.lib import interval
 
 
 class PictureManager(object):
@@ -77,13 +78,14 @@ class PictureManager(object):
         :param interval: interval between two picture, must be more than 5 seconds
         :param file_name: name of the files generated, no need for extension
         '''
-        if interval <= 5:
+        if interval <= 2:
             msg = "the interval between two picture must be more than 5 seconds"
             raise Exception(msg)
         
         number_picture = lapse_minute * 60 / interval
-        corrected_interval = interval - 5;
+        self.camera.start_preview()
         for picture in range(number_picture):
-            sleep(corrected_interval)
-            self.take_picture(join(path, file_name + str(picture) + ".jpg"), 5)
+            sleep(interval)
+            self.camera.capture(join(path, file_name + str(picture) + ".jpg"))
+        self.camera.stop_preview()
             
