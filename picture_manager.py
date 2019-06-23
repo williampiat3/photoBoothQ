@@ -1,7 +1,6 @@
 from picamera import PiCamera
 from time import sleep
 from os.path import join
-from pandas._libs.lib import interval
 
 
 class PictureManager(object):
@@ -44,7 +43,7 @@ class PictureManager(object):
         '''
         return self.camera.framerate
     
-    def take_picture(self, path, sleeptime=5):
+    def take_picture(self, path, sleeptime=5,action_func=lambda x: None):
         '''
         method taking a picture and saving it to given path
         :param path: full path of the picture, need to include name of the
@@ -55,6 +54,7 @@ class PictureManager(object):
         '''
         self.camera.start_preview()
         sleep(sleeptime)
+        action_func()
         self.camera.capture(path)
         self.camera.stop_preview()
     
@@ -71,7 +71,7 @@ class PictureManager(object):
         self.camera.stop_recording()
         self.camera.stop_preview()
         
-    def time_lapse(self, path, lapse_minute, interval=10, file_name="lapse"):
+    def time_lapse(self, path, lapse_minute, interval_picture=10, file_name="lapse"):
         '''
         method taking a time lapse during a given time
         :param path: full path of the created pictures, no extension or filename needed
@@ -79,14 +79,14 @@ class PictureManager(object):
         :param interval: interval between two picture, must be more than 5 seconds
         :param file_name: name of the files generated, no need for extension
         '''
-        if interval <= 2:
+        if interval_picture <= 2:
             msg = "the interval between two picture must be more than 5 seconds"
             raise Exception(msg)
         
-        number_picture = lapse_minute * 60 / interval
+        number_picture = lapse_minute * 60 / interval_picture
         self.camera.start_preview()
         for picture in range(number_picture):
-            sleep(interval)
+            sleep(interval_picture)
             self.camera.capture(join(path, file_name + str(picture) + ".jpg"))
         self.camera.stop_preview()
             

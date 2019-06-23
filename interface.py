@@ -24,7 +24,7 @@ class Interface():
 
 
 		#Start displaying
-		self.window = pygame.display.set_mode(size_screen,RESIZABLE)
+		self.window = pygame.display.set_mode((0,0),FULLSCREEN)
 		self.window.fill([0,0,0])
 		pygame.display.flip()
 		self.window.blit(self.welcome_imgs[1],(0,0))
@@ -66,8 +66,7 @@ class Interface():
 		#filling black the window
 		self.window.fill([0,0,0])
 		pygame.display.flip()
-		#playing random sound
-		pick_random_in_list(self.shots_sounds).play()
+		
 
 	def play_ending(self):
 		#choosing random ending in the list
@@ -76,8 +75,10 @@ class Interface():
 		time.sleep(4)
 
 	def take_picture(self,**kwargs):
-		self.camera.take_picture(self.save_folder+"photo_{:05d}".format(self.count_photo),**kwargs)
+		self.camera.take_picture(self.save_folder+"photo_{:05d}".format(self.count_photo)+".jpg",sleeptime=5,action_func=pick_random_in_list(self.shots_sounds).play)
 		self.count_photo+=1
+		
+		
 
 
 
@@ -95,7 +96,7 @@ if __name__ == "__main__":
 	
 	#constants:
 	#Size Screen
-	size_screen=(1058, 595)
+	size_screen=(650, 500)
 
 	countdown_sound="sound_booth/countdown.ogg"
 
@@ -116,7 +117,7 @@ if __name__ == "__main__":
 
 	screens_ending=["picture_camera/end1.png"]
 
-	save_folder = "images_taken/"
+	save_folder = "/home/pi/Pictures/image_taken/"
 
 
 
