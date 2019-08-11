@@ -5,9 +5,8 @@ from os.path import join
 
 class PictureManager(object):
 
-    def __init__(self):
-        self.camera = PiCamera()
-        self.set_max_resolution()
+    def __init__(self, sensor_mode=2):
+        self.camera = PiCamera(sensor_mode)
         
     def set_max_resolution(self):
         '''
