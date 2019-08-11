@@ -52,7 +52,7 @@ class PictureManager(object):
                           leave at least 2 second for the camera to get used 
                           to the light
         '''
-        self.camera.start_preview()
+        self.camera.start_preview(hflip=True)
         sleep(sleeptime)
         action_func()
         self.camera.capture(path)
