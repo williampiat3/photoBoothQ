@@ -5,7 +5,7 @@ import random
 from picture_manager import PictureManager
 
 class Interface():
-	def __init__(self,size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending,save_folder):
+	def __init__(self,size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending,preview_screens,save_folder):
 		pygame.init()
 		#screens and sounds
 		self.size_screen=size_screen
@@ -16,6 +16,7 @@ class Interface():
 		self.readies=self.load_images(*readies)
 		self.screens_countdown=self.load_images(*screens_countdown)
 		self.screens_ending=self.load_images(*screens_ending)
+		self.preview_screens = self.load_images(*preview_screens)
 
 		#Camera folder and pictures
 		self.save_folder=save_folder
@@ -77,6 +78,15 @@ class Interface():
 	def take_picture(self,**kwargs):
 		self.camera.take_picture(self.save_folder+"photo_{:05d}".format(self.count_photo)+".jpg",sleeptime=5,action_func=pick_random_in_list(self.shots_sounds).play)
 		self.count_photo+=1
+
+	def display_picture(self,index,delay=6):
+		self.window.blit(pick_random_in_list(self.preview_screens),(0,0))
+		real_index=range(self.count_photo)[index]
+		img = self.load_images("photo_{:05d}".format(real_index)+".jpg")[0]
+		self.window.blit(img,(0,0))
+		pygame.display.flip()
+		time.sleep(delay)
+
 		
 		
 
@@ -115,13 +125,15 @@ if __name__ == "__main__":
 
 	screens_countdown=["count/image-000{:02}.png".format(i) for i in range(1,52)]
 
-	screens_ending=["picture_camera/end1.png"]
+	screens_ending=["picture_camera/end"+str(integer)+".png" for integer in range(1,6)]
+
+	preview_screens = ["picture_camera/preview.png"]
 
 	save_folder = "/home/pi/Pictures/image_taken/"
 
 
 
-	interface = Interface(size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending,save_folder)
+	interface = Interface(size_screen,countdown_sound,shots_sounds,welcome_imgs,readies,screens_countdown,screens_ending,preview_screens,save_folder)
 
 	keep_open = True
 	#tracker for which screen is currently running
@@ -146,6 +158,10 @@ if __name__ == "__main__":
 
 				#display random ending
 				interface.play_ending()
+
+				#display preview picture (index -1 refers to the last picture)
+				interface.display_picture(-1)
+
 				#display welcome screen
 				interface.welcome_screen()
 
