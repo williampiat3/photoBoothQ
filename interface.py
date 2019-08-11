@@ -76,7 +76,7 @@ class Interface():
 		time.sleep(4)
 
 	def take_picture(self,**kwargs):
-		self.camera.take_picture(self.save_folder+"photo_{:05d}".format(self.count_photo)+".jpg",sleeptime=5,action_func=pick_random_in_list(self.shots_sounds).play)
+		self.camera.take_picture(self.save_folder+"photo_{:05d}".format(self.count_photo)+".jpg",sleeptime=2.5,action_func=pick_random_in_list(self.shots_sounds).play)
 		self.count_photo+=1
 
 	def display_picture(self,index,delay=6):
