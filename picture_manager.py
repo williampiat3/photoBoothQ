@@ -13,10 +13,10 @@ class PictureManager(object):
         '''
         method setting camera to max resolution for pictures
         '''
-        self.set_resolution()
         self.set_framerate()
-        
-    def set_resolution(self, length=2592, height=1944):
+        self.set_resolution()
+
+    def set_resolution(self, length=3280, height=2464):
         '''
         method setting camera resolution
         :param length: length in pixel of the picture
@@ -43,7 +43,7 @@ class PictureManager(object):
         '''
         return self.camera.framerate
     
-    def take_picture(self, path, sleeptime=5,action_func=lambda x: None):
+    def take_picture(self, path, sleeptime=5, action_func=lambda x: None):
         '''
         method taking a picture and saving it to given path
         :param path: full path of the picture, need to include name of the
