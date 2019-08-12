@@ -80,6 +80,8 @@ class Interface():
 
 	def display_picture(self, index, delay=6):
 		self.window.blit(pick_random_in_list(self.preview_screens), (0, 0))
+		pygame.display.flip()
+		time.sleep(3)
 		real_index = range(self.count_photo)[index]
 		img = self.load_images("photo_{:05d}".format(real_index) + ".jpg")[0]
 		self.window.blit(img, (0, 0))
