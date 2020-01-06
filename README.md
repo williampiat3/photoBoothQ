@@ -23,6 +23,7 @@ Sounds and pictures are not to be used for commercial purposes
 Amateur work please be kind ;)
 
 Here is our wonderful but not perfect box for holding everything
-
-![Nice Box](https://raw.githubusercontent.com/williampiat3/photoBoothQ/master/nice_box.jpg "Niiiice")
+<p align="center">
+	<img src="./nice_box.jpg">
+</p>
 
