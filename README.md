@@ -24,5 +24,5 @@ Amateur work please be kind ;)
 
 Here is our wonderful but not perfect box for holding everything
 
-![Nice Box](https://github.com/williampiat3/photoBoothQ/raw/master/nice_box.png "Niiiice")
+![Nice Box](https://raw.githubusercontent.com/williampiat3/photoBoothQ/master/nice_box.jpg "Niiiice")
 
