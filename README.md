@@ -19,4 +19,5 @@ The interface built with pygame waits for the click of the user (ie the touch on
 
 ## Cautions
 Sounds and pictures are not to be used for commercial purposes
+
 Amateur work please be kind ;)
