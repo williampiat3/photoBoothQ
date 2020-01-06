@@ -21,3 +21,8 @@ The interface built with pygame waits for the click of the user (ie the touch on
 Sounds and pictures are not to be used for commercial purposes
 
 Amateur work please be kind ;)
+
+Here is our wonderful but not perfect box for holding everything
+
+![Nice Box](https://github.com/williampiat3/photoBoothQ/raw/master/nice_box.png "Niiiice")
+

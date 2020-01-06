@@ -1,2 +1,4 @@
-# ignore json file
+# ignore json, temporary and compiled files
 *.json
+*~
+*.pyc
